@@ -2463,3 +2463,5 @@ function Library:CreateWindow(options)
 	
 	return GUI
 end
+
+return Library
