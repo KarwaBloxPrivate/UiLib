@@ -1912,6 +1912,7 @@ function Library:CreateWindow(options)
 
 						Dropdown.Items[id].instance["ff"].InputEnded:Connect(function(Input, gp)
 							if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch and not gp then
+								Dropdown.ActiveId = id
 								Library:tween(Dropdown.Items[id].instance["ff"], {BackgroundColor3 = Color3.fromRGB(15, 21, 35)})
 								if Dropdown.ActiveId ~= id then
 									Library:tween(Dropdown.Items[Dropdown.ActiveId].instance["ff"], {BackgroundColor3 = Color3.fromRGB(15, 21, 35)})
@@ -1920,7 +1921,7 @@ function Library:CreateWindow(options)
 								Library.Config[options.name] = id
 								options.callback(id)
 								Dropdown["f7"]["Text"] = options.name .. " | " .. id
-								Dropdown.ActiveId = id
+
 							end
 						end)
 						
@@ -2041,7 +2042,6 @@ function Library:CreateWindow(options)
 					Hover = false,
 					HoveringItem = false
 				}
-
 				--//Render Dropdown
 				do
 					-- StarterGui.UIlib(3rd).MainFrame.ContentContainer.Section Farming.Dropdown
@@ -2246,8 +2246,9 @@ function Library:CreateWindow(options)
 
 
 					function MultiDropdown:Remove(id)
-						if table.find(MultiDropdown.ActiveIds, id) then
-							GUI:SendConsoleMessage("Warn", "You can't delete option that is currently valid: "..id)
+						local x = table.find(MultiDropdown.ActiveIds, id)
+						if x then
+							table.remove(MultiDropdown.ActiveIds, x)
 						else
 							if MultiDropdown.Items[id] ~= nil then
 								if MultiDropdown.Items[id].instance ~= nil then
@@ -2462,48 +2463,3 @@ function Library:CreateWindow(options)
 	
 	return GUI
 end
-
-return Library
-
---[[
-local Main = Library:CreateWindow({Text = "Karwa's Scripts", GameText = "Pet Simulator 99!", GUICloseBind = "RightShift", GUIDragSpeed = 0.15})
-local TestTab = Main:CreateTab({name = "Test1"})
-local TestTab2 = Main:CreateTab({name = "Test2"})
-local TestTab3 = Main:CreateTab({name = "NiggerLongAssText"})
-local TestSection = TestTab2:Section({name = "Nigger"})
-local TestSection1 = TestTab:Section({name = "Abrakadabra"})
-local Table = {"aha1", "aha2", "aha3", "nigger"}
-local aaaaaaaaaaaaaa = TestSection1:Dropdown({name = "doun doun", values = Table, deafult = "aha2"})
-local MultiDropdown = TestSection1:MultiDropdown()
-local TextBox = TestSection1:TextBox()
-local btnnigger = TestSection1:Button({name = "Remove Nigger", callback = function() aaaaaaaaaaaaaa:Remove("nigger") end})
-local TestSection2 = TestTab:Section({name = "Abrakadabra3"})
-local SlaveCounter = 0
-local LabelTest = TestSection1:Label({name = "You Have "..SlaveCounter.." Slaves!", PulseText = true})
-local NiggaButton = TestSection1:Button({
-	name = "Spawn A Slave", 
-	callback = function() 
-		SlaveCounter = SlaveCounter + 1
-		LabelTest:SetColor(math.random(0, 255), math.random(0, 255), math.random(0, 255))
-		Main:SendConsoleMessage("print", "1x Slave Added!")
-		if SlaveCounter == 100 then
-			Main:SendConsoleMessage("Warn", "100x Slaves Are In Existance!")
-		end
-		MultiDropdown:Remove("value3")
-	end}
-)
-local LabelTest2 = TestSection1:Label({name = "You Have "..SlaveCounter.." Slaves!", PulseText = true})
-local LabelTest3 = TestSection1:Label({name = "You Have "..SlaveCounter.." Slaves!", PulseText = true})
-local LabelTest4 = TestSection1:Label({name = "You Have "..SlaveCounter.." Slaves!", PulseText = true})
-local LabelTest5 = TestSection1:Label({name = "You Have "..SlaveCounter.." Slaves!", PulseText = true})
-
-spawn(function()
-	while task.wait() do
-		NiggaButton:SetText("Spawn A Slave ("..SlaveCounter..")")
-		LabelTest:SetText("You Have "..SlaveCounter.." Slaves!")
-	end
-end)
-local TestToggle = TestSection1:Toggle({name = "Toggle My Ass", deafult = false, callback = function(v) print(v) end})
-local Executor = TestSection1:Executor({name = "nigger"})
-local Slider = TestSection1:Slider({name = "Slaves Number", min = 1, max = 1000, deafult = 1})
-]]
